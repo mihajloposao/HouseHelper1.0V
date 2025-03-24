@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SignIn</title>
+    <!-- Povezivanje sa CSS fajlom unutar 'static' foldera -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logsignIn.css') }}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Enter your address</h2>
+        <form action="{{ url_for('signInUserAddress') }}" method="post">
+            <label for="userCountry">Country:</label>
+            <input type="text" id="userCountry" name="userCountry" required>
+
+            <label for="userCity">City:</label>
+            <input type="text" id="userCity" name="userCity" required>
+
+            <label for="userStreet">Street:</label>
+            <input type="text" id="userStreet" name="userStreet" required>
+
+            <label for="userStreetNumber">Street Number:</label>
+            <input type="text" id="userStreetNumber" name="userStreetNumber" required>
+
+            {% if errorMessage %}
+                <label style="color: red;">{{ errorMessage }}</label>
+            {% endif %}
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
