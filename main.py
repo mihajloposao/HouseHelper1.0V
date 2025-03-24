@@ -1,4 +1,4 @@
-from base import makingDatabases,check_password_hash,UserById,addUserAddress
+from base import makingDatabases,UserById,addUserAddress
 from flask import Flask, render_template, url_for, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from simpleFunctions import singInPersonalInfoPost, logInPost
@@ -31,7 +31,7 @@ def signInUserPersonalInfo():
 @app.route("/signInAddress",methods= ["GET","POST"] )
 def signInUserAddress():
     if request.method == "POST":
-        addUserAddress(current_user,request.form)
+        addUserAddress(current_user.userEmail,request.form)
         return redirect(url_for("homeUser"))
     return render_template("html/signInUserAddress.html")
 
