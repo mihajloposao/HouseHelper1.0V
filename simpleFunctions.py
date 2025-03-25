@@ -21,7 +21,7 @@ def logInPost():
     user = UserByEmail(request.form["userEmail"])
     if user and check_password_hash(user.userPassword, password):
         login_user(user,remember=True)
-        return current_user.userName
+        return redirect(url_for("homeUser"))
     else:
         return redirect(url_for("logInUser"))
 

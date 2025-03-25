@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Navbar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-links">
+            {%if current_user.is_authenticated%}
+            <a href="{{ url_for('logOutUser') }}">Log Out</a>
+            {%else%}
+            <a href="{{ url_for('signInUserPersonalInfo') }}">Sign In</a>
+            <p>/</p>
+            <a href="{{ url_for('logInUser') }}">Log In</a>
+            {%endif%}
+        </div>
+    </div>
+
+    <div class="title-container">
+        <h1>HouseHelper</h1>
+        <h2>Search what you need</h2>
+    </div>
+</body>
+</html>

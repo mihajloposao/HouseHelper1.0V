@@ -20,9 +20,11 @@ def load_user(user_id):
 @app.route("/")
 def homeUser():
     if current_user.is_authenticated:
-        return current_user.userName
+        return render_template("html/index.html")
+        #return current_user.userName
     country, city = getUserLocation()
-    return f"Country: {country}, City: {city}"
+    return render_template("html/index.html")
+    #return f"Country: {country}, City: {city}"
 
 @app.route("/signInPersonalInfo",methods= ["GET","POST"] )
 def signInUserPersonalInfo():
