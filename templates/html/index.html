@@ -23,5 +23,34 @@
         <h1>HouseHelper</h1>
         <h2>Search what you need</h2>
     </div>
+    <div class="search-container">
+        <input type="text" id="search-box" placeholder="Search..." onkeyup="searchSuggestions()">
+        <ul id="suggestions"></ul>
+    </div>
+    <script>
+        function searchSuggestions() {
+            let query = document.getElementById("search-box").value;
+            if (query.length === 0) {
+                document.getElementById("suggestions").innerHTML = "";
+                return;
+            }
+
+            fetch(`/search?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let suggestionsList = document.getElementById("suggestions");
+                    suggestionsList.innerHTML = "";
+                    data.forEach(item => {
+                        let li = document.createElement("li");
+                        li.textContent = item;
+                        li.onclick = function() {
+                            document.getElementById("search-box").value = item;
+                            suggestionsList.innerHTML = "";
+                        };
+                        suggestionsList.appendChild(li);
+                    });
+                });
+        }
+    </script>
 </body>
 </html>

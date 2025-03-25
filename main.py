@@ -1,7 +1,9 @@
 from base import makingDatabases,UserById,addUserAddress
-from flask import Flask, render_template, url_for, redirect, request
+from flask import Flask, render_template, url_for, redirect, request, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from simpleFunctions import singInPersonalInfoPost, logInPost,getUserLocation
+
+data = ["Python", "Flask", "JavaScript", "SQLAlchemy", "HTML", "CSS", "Jinja", "Bootstrap"]
 
 
 makingDatabases()
@@ -16,6 +18,12 @@ login_manager.login_view = "logIn"
 @login_manager.user_loader
 def load_user(user_id):
     return UserById(int(user_id))
+
+@app.route('/search')
+def search():
+    query = request.args.get('q', '').lower()
+    results = [item for item in data if query in item.lower()]  # Filtriranje rezultata
+    return jsonify(results)  # Vraćamo podatke u JSON formatu
 
 @app.route("/")
 def homeUser():
