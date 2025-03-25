@@ -1,0 +1,1 @@
+in simpleFunctions file is getIpAddress function in which you need to change the way of getting ip address
