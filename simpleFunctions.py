@@ -7,6 +7,9 @@ def htmlForUserHomeLogOut():
     userLocation = getUserLocation()
     return f"Country: {userLocation['country']}, City: {userLocation['city']}"
 
+def htmlForUserHomeLogIn():
+    return render_template("html/index.html")
+
 def htmlForSingInErrorMessage(message):
     return render_template("html/signInUserPersonalInfo.html", errorMessage=message)
 

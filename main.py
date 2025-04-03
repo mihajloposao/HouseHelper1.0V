@@ -2,7 +2,8 @@ from base import makingDatabases,UserById,addUserAddress
 from flask import Flask, render_template, url_for, redirect, request, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOut,
-                             htmlForSignInUserPersonalInfo,htmlForSignInUserAddress,htmlForLogInUser)
+                             htmlForSignInUserPersonalInfo,htmlForSignInUserAddress,htmlForLogInUser,
+                             htmlForUserHomeLogIn)
 
 data = ["Python", "Flask", "JavaScript", "SQLAlchemy", "HTML", "CSS", "Jinja", "Bootstrap"]
 
@@ -31,7 +32,7 @@ def search():
 @app.route("/")
 def homeUser():
     if current_user.is_authenticated:
-        return render_template("html/index.html")
+        return htmlForUserHomeLogIn()
     return htmlForUserHomeLogOut()
 
 @app.route("/signInPersonalInfo",methods= ["GET","POST"] )
