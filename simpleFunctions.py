@@ -1,24 +1,41 @@
 from flask import render_template,request,redirect,url_for
-from base import userExist,addUser,UserByEmail,check_password_hash,UserByEmail
+from base import userExist,addNewUserToBase,getUserByEmail,check_password_hash,getUserByEmail
 from flask_login import login_user, current_user
 import requests
 
-def singInErrorMessage(message):
+def htmlForUserHomeLogOut():
+    userLocation = getUserLocation()
+    return f"Country: {userLocation['country']}, City: {userLocation['city']}"
+
+def htmlForSingInErrorMessage(message):
     return render_template("html/signInUserPersonalInfo.html", errorMessage=message)
 
-def singInPersonalInfoPost():
+def htmlForSingInPersonalInfoProblemExists():
     if userExist(request.form["userEmail"]):
-        return singInErrorMessage("Email already exists!")
+        return htmlForSingInErrorMessage(message="Email already exists!")
     if request.form["userPassword"] != request.form["userRepeatePassword"]:
-        return singInErrorMessage("Passwords do not match!")
-    addUser(request.form)
-    user = UserByEmail(request.form["userEmail"])
-    login_user(user, remember=True)
-    return redirect(url_for("signInUserAddress"))
+        return htmlForSingInErrorMessage(message="Passwords do not match!")
+def htmlForSignInUserPersonalInfo():
+    return render_template("html/signInUserPersonalInfo.html")
+
+def htmlForSignInUserAddress():
+    return render_template("html/signInUserAddress.html")
+
+def singInPersonalInfoProblemExists():
+    return userExist(request.form["userEmail"]) or request.form["userPassword"] != request.form["userRepeatePassword"]
+
+def makeAndLogInNewUser():
+    if singInPersonalInfoProblemExists():
+        return htmlForSingInPersonalInfoProblemExists()
+    else:
+        addNewUserToBase(request.form)
+        newUser = getUserByEmail(request.form["userEmail"])
+        login_user(newUser, remember=True)
+
 
 def logInPost():
     password = request.form["userPassword"]
-    user = UserByEmail(request.form["userEmail"])
+    user = getUserByEmail(request.form["userEmail"])
     if user and check_password_hash(user.userPassword, password):
         login_user(user,remember=True)
         return current_user.userName
@@ -38,7 +55,3 @@ def getUserLocation():
     country = data.get("country", "Nepoznata država")
     city = data.get("city", "Nepoznat grad")
     return {"country":country,"city":city}
-
-def homeLogOutUser():
-    userLocation = getUserLocation()
-    return f"Country: {userLocation['country']}, City: {userLocation['city']}"

@@ -1,7 +1,8 @@
 from base import makingDatabases,UserById,addUserAddress
 from flask import Flask, render_template, url_for, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from simpleFunctions import singInPersonalInfoPost, logInPost,getUserLocation,homeLogOutUser
+from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOut,
+                             htmlForSignInUserPersonalInfo,htmlForSignInUserAddress)
 
 # when server go live this should be deleted
 makingDatabases()
@@ -21,20 +22,21 @@ def load_user(user_id):
 def homeUser():
     if current_user.is_authenticated:
         return current_user.userName
-    return homeLogOutUser()
+    return htmlForUserHomeLogOut()
 
 @app.route("/signInPersonalInfo",methods= ["GET","POST"] )
 def signInUserPersonalInfo():
     if request.method == "POST":
-        return singInPersonalInfoPost()
-    return render_template("html/signInUserPersonalInfo.html")
+        makeAndLogInNewUser()
+        return redirect(url_for("signInUserAddress"))
+    return htmlForSignInUserPersonalInfo()
 
 @app.route("/signInAddress",methods= ["GET","POST"] )
 def signInUserAddress():
     if request.method == "POST":
-        addUserAddress(current_user.userEmail,request.form)
+        addUserAddress(request.form)
         return redirect(url_for("homeUser"))
-    return render_template("html/signInUserAddress.html")
+    return htmlForSignInUserAddress()
 
 @app.route("/logIn",methods=["GET","POST"])
 def logInUser():
