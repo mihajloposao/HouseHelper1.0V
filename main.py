@@ -1,9 +1,9 @@
 from base import makingDatabases,UserById,addUserAddress
 from flask import Flask, render_template, url_for, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from simpleFunctions import singInPersonalInfoPost, logInPost,getUserLocation
+from simpleFunctions import singInPersonalInfoPost, logInPost,getUserLocation,homeLogOutUser
 
-
+# when server go live this should be deleted
 makingDatabases()
 
 app = Flask(__name__)
@@ -21,8 +21,7 @@ def load_user(user_id):
 def homeUser():
     if current_user.is_authenticated:
         return current_user.userName
-    country, city = getUserLocation()
-    return f"Country: {country}, City: {city}"
+    return homeLogOutUser()
 
 @app.route("/signInPersonalInfo",methods= ["GET","POST"] )
 def signInUserPersonalInfo():

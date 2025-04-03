@@ -37,4 +37,8 @@ def getUserLocation():
     data = response.json()
     country = data.get("country", "Nepoznata država")
     city = data.get("city", "Nepoznat grad")
-    return country, city
+    return {"country":country,"city":city}
+
+def homeLogOutUser():
+    userLocation = getUserLocation()
+    return f"Country: {userLocation['country']}, City: {userLocation['city']}"
