@@ -5,9 +5,7 @@ from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOu
                              htmlForSignInUserPersonalInfo,htmlForSignInUserAddress,htmlForLogInUser,
                              htmlForUserHomeLogIn)
 
-data = ["Python", "Flask", "JavaScript", "SQLAlchemy", "HTML", "CSS", "Jinja", "Bootstrap"]
-
-
+data = ["Cleaning", "Electrician ", "Gardener", "Babysitter", "Laundry", "Chef ", "Plumber", "Carpenter"]
 
 # when server go live this should be deleted
 makingDatabases()
