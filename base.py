@@ -1,7 +1,7 @@
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy import Column, String, Integer, create_engine
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 
 Base = declarative_base()
 engine = create_engine("sqlite:///usersWorkersCompaniesAdmin.db", echo=True)
@@ -23,7 +23,7 @@ class User(Base, UserMixin):
     userStreetNumber = Column(String, nullable=True)
     userPassword = Column(String, nullable=False)
 
-def addUser(basicUserInfo):
+def addNewUserToBase(basicUserInfo):
     session = Session()
     newUser = User(
         userEmail=basicUserInfo["userEmail"],
@@ -43,7 +43,7 @@ def userExist(userEmail):
     finally:
         session.close()
 
-def UserByEmail(userEmail):
+def getUserByEmail(userEmail):
     session = Session()
     try:
         return session.query(User).filter_by(userEmail=userEmail).first()
@@ -57,9 +57,9 @@ def UserById(id):
     finally:
         session.close()
 
-def addUserAddress(userEmail, basicUserInfo):
+def addUserAddress(basicUserInfo):
     session = Session()
-    user = session.query(User).filter_by(userEmail=userEmail).first()
+    user = session.query(User).filter_by(userEmail=current_user.userEmail).first()
     try:
         user.userCountry = basicUserInfo["userCountry"]
         user.userCity = basicUserInfo["userCity"]

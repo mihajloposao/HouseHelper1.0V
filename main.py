@@ -1,11 +1,14 @@
 from base import makingDatabases,UserById,addUserAddress
 from flask import Flask, render_template, url_for, redirect, request, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from simpleFunctions import singInPersonalInfoPost, logInPost,getUserLocation
+from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOut,
+                             htmlForSignInUserPersonalInfo,htmlForSignInUserAddress,htmlForLogInUser)
 
 data = ["Python", "Flask", "JavaScript", "SQLAlchemy", "HTML", "CSS", "Jinja", "Bootstrap"]
 
 
+
+# when server go live this should be deleted
 makingDatabases()
 
 app = Flask(__name__)
@@ -29,29 +32,27 @@ def search():
 def homeUser():
     if current_user.is_authenticated:
         return render_template("html/index.html")
-        #return current_user.userName
-    country, city = getUserLocation()
-    return render_template("html/index.html")
-    #return f"Country: {country}, City: {city}"
+    return htmlForUserHomeLogOut()
 
 @app.route("/signInPersonalInfo",methods= ["GET","POST"] )
 def signInUserPersonalInfo():
     if request.method == "POST":
-        return singInPersonalInfoPost()
-    return render_template("html/signInUserPersonalInfo.html")
+        makeAndLogInNewUser()
+        return redirect(url_for("signInUserAddress"))
+    return htmlForSignInUserPersonalInfo()
 
 @app.route("/signInAddress",methods= ["GET","POST"] )
 def signInUserAddress():
     if request.method == "POST":
-        addUserAddress(current_user.userEmail,request.form)
+        addUserAddress(request.form)
         return redirect(url_for("homeUser"))
-    return render_template("html/signInUserAddress.html")
+    return htmlForSignInUserAddress()
 
 @app.route("/logIn",methods=["GET","POST"])
 def logInUser():
     if request.method == "POST":
         return logInPost()
-    return render_template("html/logInUser.html")
+    return htmlForLogInUser()
 
 @app.route("/logOut")
 @login_required
