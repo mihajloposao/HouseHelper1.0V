@@ -21,6 +21,9 @@ def htmlForSignInUserPersonalInfo():
 def htmlForSignInUserAddress():
     return render_template("html/signInUserAddress.html")
 
+def htmlForLogInUser():
+    return render_template("html/logInUser.html")
+
 def singInPersonalInfoProblemExists():
     return userExist(request.form["userEmail"]) or request.form["userPassword"] != request.form["userRepeatePassword"]
 
@@ -32,13 +35,12 @@ def makeAndLogInNewUser():
         newUser = getUserByEmail(request.form["userEmail"])
         login_user(newUser, remember=True)
 
-
 def logInPost():
     password = request.form["userPassword"]
     user = getUserByEmail(request.form["userEmail"])
     if user and check_password_hash(user.userPassword, password):
         login_user(user,remember=True)
-        return current_user.userName
+        return redirect(url_for("homeUser"))
     else:
         return redirect(url_for("logInUser"))
 

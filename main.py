@@ -2,7 +2,7 @@ from base import makingDatabases,UserById,addUserAddress
 from flask import Flask, render_template, url_for, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOut,
-                             htmlForSignInUserPersonalInfo,htmlForSignInUserAddress)
+                             htmlForSignInUserPersonalInfo,htmlForSignInUserAddress,htmlForLogInUser)
 
 # when server go live this should be deleted
 makingDatabases()
@@ -42,7 +42,7 @@ def signInUserAddress():
 def logInUser():
     if request.method == "POST":
         return logInPost()
-    return render_template("html/logInUser.html")
+    return htmlForLogInUser()
 
 @app.route("/logOut")
 @login_required
