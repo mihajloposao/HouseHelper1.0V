@@ -1,5 +1,5 @@
-from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+from sqlalchemy import Column, String, Integer, create_engine, ForeignKey
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin, current_user
 
@@ -22,6 +22,19 @@ class User(Base, UserMixin):
     userStreet = Column(String, nullable=True)
     userStreetNumber = Column(String, nullable=True)
     userPassword = Column(String, nullable=False)
+
+class Country(Base):
+    __tablename__ = "Countries"
+    id = Column(Integer, primary_key=True)
+    countryName = Column(String, nullable=False)
+    cities = relationship("City", back_populates="country")
+
+class City(Base):
+    __tablename__ = "Cities"
+    id = Column(Integer, primary_key=True)
+    cityName = Column(String, nullable=False)
+    countryId = Column(Integer, ForeignKey("Countries.id"), nullable=False)
+    country = relationship("Country", back_populates="cities")
 
 def addNewUserToBase(basicUserInfo):
     session = Session()
