@@ -7,6 +7,12 @@ def htmlForUserHomeLogOut():
     userLocation = getUserLocation()
     return f"Country: {userLocation['country']}, City: {userLocation['city']}"
 
+def htmlForUserHomeLogIn():
+    if current_user.userName == "admin":
+        return "RADI"
+    else:
+        return current_user.userName
+
 def htmlForSingInErrorMessage(message):
     return render_template("html/signInUserPersonalInfo.html", errorMessage=message)
 
