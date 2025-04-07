@@ -9,10 +9,12 @@ def htmlForUserHomeLogOut():
 
 def htmlForUserHomeLogIn():
     if current_user.userName == "admin":
-        return "RADI"
+        return htmlForAdminDashboard()
     else:
         return current_user.userName
 
+def htmlForAdminDashboard():
+    return render_template("html/adminDashboard.html")
 def htmlForSingInErrorMessage(message):
     return render_template("html/signInUserPersonalInfo.html", errorMessage=message)
 
