@@ -13,7 +13,31 @@
             <a href="{{ url_for('logOutUser') }}">Log Out</a>
         </div>
     </div>
+    <div class="main-content">
+        <div class="forms">
+            <form  method="post">
+                <input type="text" name="countryName" placeholder="Country name" required>
+                <button type="submit" name="formType" value="countryForm">Enter new country</button>
+            </form>
 
+            <form  method="post">
+                <input type="text" name="countryName" placeholder="Country name" required>
+                <input type="text" name="cityName" placeholder="City name" required>
+                <button type="submit" name="formType" value="cityForm">Enter new city</button>
+            </form>
+
+            <!-- Možeš dodavati još formi i layout će se lepo ponašati -->
+            <form  method="post">
+                <input type="text" name="serviceName" placeholder="Service name" required>
+                <button type="submit" name="formType" value="serviceForm">Enter new service</button>
+            </form>
+
+            <form  method="post">
+                <input type="text" name="stateName" placeholder="State name" required>
+                <button type="submit" name="formType" value="stateForm">Enter new state</button>
+            </form>
+        </div>
+    </div>
 
 </body>
 </html>

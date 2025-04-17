@@ -6,7 +6,7 @@ from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOu
                              htmlForUserHomeLogIn)
 
 # when server go live this should be deleted
-makingDatabases()
+#makingDatabases()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret key"
