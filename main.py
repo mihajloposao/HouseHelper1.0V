@@ -24,8 +24,8 @@ def load_user(user_id):
 @app.route('/search')
 def search():
     query = request.args.get('q', '').lower()
-    results = [item for item in data if query in item.lower()]  # Filtriranje rezultata
-    return jsonify(results)  # Vraćamo podatke u JSON formatu
+    results = [item for item in data if query in item.lower()]
+    return jsonify(results)
 
 @app.route("/")
 def homeUser():

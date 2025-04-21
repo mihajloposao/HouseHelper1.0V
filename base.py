@@ -23,6 +23,11 @@ class User(Base, UserMixin):
     userStreetNumber = Column(String, nullable=True)
     userPassword = Column(String, nullable=False)
 
+class Profession(Base):
+    __tablename__ = "Professions"
+    id = Column(Integer, primary_key=True)
+    professionName = Column(String, nullable=False)
+
 def addNewUserToBase(basicUserInfo):
     session = Session()
     newUser = User(
