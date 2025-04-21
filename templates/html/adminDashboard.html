@@ -15,7 +15,7 @@
     </div>
     <div class="main-content">
         <div class="forms">
-            <form  method="post">
+            <form  action="{{ url_for('adminAddNewCounty') }}" method="post">
                 <input type="text" name="countryName" placeholder="Country name" required>
                 <button type="submit" name="formType" value="countryForm">Enter new country</button>
             </form>

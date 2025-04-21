@@ -1,5 +1,6 @@
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from sqlalchemy import Column, String, Integer, create_engine, ForeignKey
+from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin, current_user
 
@@ -13,7 +14,7 @@ def makingDatabases():
 class User(Base, UserMixin):
     __tablename__ = "Users"
     id = Column(Integer, primary_key=True)
-    userEmail = Column(String, nullable=False)
+    userEmail = Column(String, nullable=False, unique= True)
     userName = Column(String, nullable=False)
     userSurename = Column(String, nullable=False)
     userPhone = Column(String, nullable=False)
@@ -26,13 +27,13 @@ class User(Base, UserMixin):
 class Country(Base):
     __tablename__ = "Countries"
     id = Column(Integer, primary_key=True)
-    countryName = Column(String, nullable=False)
+    countryName = Column(String, nullable=False, unique= True)
     cities = relationship("City", back_populates="country")
 
 class City(Base):
     __tablename__ = "Cities"
     id = Column(Integer, primary_key=True)
-    cityName = Column(String, nullable=False)
+    cityName = Column(String, nullable=False, unique= True)
     countryId = Column(Integer, ForeignKey("Countries.id"), nullable=False)
     country = relationship("Country", back_populates="cities")
 
@@ -79,5 +80,16 @@ def addUserAddress(basicUserInfo):
         user.userStreet = basicUserInfo["userStreet"]
         user.userStreetNumber = basicUserInfo["userStreetNumber"]
         session.commit()
+    finally:
+        session.close()
+
+def addNewCountry(countryName):
+    session = Session()
+    newCounty = Country(countryName = countryName)
+    session.add(newCounty)
+    try:
+        session.commit()
+    except IntegrityError:
+        session.rollback()
     finally:
         session.close()
