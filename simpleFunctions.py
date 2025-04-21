@@ -1,5 +1,5 @@
 from flask import render_template,request,redirect,url_for
-from base import userExist,addNewUserToBase,getUserByEmail,check_password_hash,getUserByEmail
+from base import userExist,addNewUserToBase,getUserByEmail,check_password_hash,getUserByEmail, getCountryNames
 from flask_login import login_user, current_user
 import requests
 
@@ -8,7 +8,15 @@ def htmlForUserHomeLogOut():
     return f"Country: {userLocation['country']}, City: {userLocation['city']}"
 
 def htmlForUserHomeLogIn():
-    return render_template("html/index.html")
+    if current_user.userName == "admin":
+        return htmlForAdminDashboard()
+    else:
+        return render_template("html/index.html")
+
+def htmlForAdminDashboard():
+    countryNames = getCountryNames()
+    countryNames = [name[0] for name in countryNames]
+    return render_template("html/adminDashboard.html",countryNames = countryNames)
 
 def htmlForSingInErrorMessage(message):
     return render_template("html/signInUserPersonalInfo.html", errorMessage=message)

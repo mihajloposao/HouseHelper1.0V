@@ -1,5 +1,6 @@
-from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+from sqlalchemy import Column, String, Integer, create_engine, ForeignKey
+from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin, current_user
 
@@ -13,7 +14,7 @@ def makingDatabases():
 class User(Base, UserMixin):
     __tablename__ = "Users"
     id = Column(Integer, primary_key=True)
-    userEmail = Column(String, nullable=False)
+    userEmail = Column(String, nullable=False, unique= True)
     userName = Column(String, nullable=False)
     userSurename = Column(String, nullable=False)
     userPhone = Column(String, nullable=False)
@@ -27,6 +28,19 @@ class Profession(Base):
     __tablename__ = "Professions"
     id = Column(Integer, primary_key=True)
     professionName = Column(String, nullable=False)
+
+class Country(Base):
+    __tablename__ = "Countries"
+    id = Column(Integer, primary_key=True)
+    countryName = Column(String, nullable=False, unique= True)
+    cities = relationship("City", back_populates="country")
+
+class City(Base):
+    __tablename__ = "Cities"
+    id = Column(Integer, primary_key=True)
+    cityName = Column(String, nullable=False, unique= True)
+    countryId = Column(Integer, ForeignKey("Countries.id"), nullable=False)
+    country = relationship("Country", back_populates="cities")
 
 def addNewUserToBase(basicUserInfo):
     session = Session()
@@ -73,3 +87,39 @@ def addUserAddress(basicUserInfo):
         session.commit()
     finally:
         session.close()
+
+def addNewCountry(countryName):
+    session = Session()
+    newCounty = Country(countryName = countryName)
+    session.add(newCounty)
+    try:
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+    finally:
+        session.close()
+
+def getCountryNames():
+    session = Session()
+    countryNames = session.query(Country.countryName).all()
+    session.close()
+    return countryNames
+
+def addNewCity(countryName, cityName):
+    countryId = getCountryIdByName(countryName)
+    session = Session()
+    newCity = City(cityName = cityName,countryId = countryId)
+    session.add(newCity)
+    try:
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+    finally:
+        session.close()
+
+def getCountryIdByName(countryName):
+    session = Session()
+    country = session.query(Country).filter_by(countryName=countryName).first()
+    countryId = country.id
+    session.close()
+    return  countryId
