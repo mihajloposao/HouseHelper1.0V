@@ -1,4 +1,4 @@
-from base import makingDatabases,UserById,addUserAddress, addNewCountry
+from base import makingDatabases,UserById,addUserAddress, addNewCountry, addNewCity
 from flask import Flask, render_template, url_for, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOut,
@@ -6,7 +6,7 @@ from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOu
                              htmlForUserHomeLogIn)
 
 # when server go live this should be deleted
-makingDatabases()
+#makingDatabases()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret key"
@@ -57,6 +57,13 @@ def adminAddNewCounty():
     addNewCountry(countryName)
     return redirect(url_for("homeUser"))
 
+@app.route("/addNewCity", methods = ["POST"])
+def adminAddNewCity():
+    countryName = request.form.get("countryName")
+    print(countryName)
+    cityName = request.form.get("cityName")
+    addNewCity(countryName,cityName)
+    return redirect(url_for("homeUser"))
 
 if __name__ == "__main__":
     app.run(debug=True)

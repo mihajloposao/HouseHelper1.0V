@@ -20,8 +20,13 @@
                 <button type="submit" name="formType" value="countryForm">Enter new country</button>
             </form>
 
-            <form  method="post">
-                <input type="text" name="countryName" placeholder="Country name" required>
+            <form action="{{ url_for('adminAddNewCity') }}" method="post">
+                <select name="countryName", required>
+                    <option value="" disabled selected hidden>Choose country</option>
+                {% for name in countryNames %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+                </select>
                 <input type="text" name="cityName" placeholder="City name" required>
                 <button type="submit" name="formType" value="cityForm">Enter new city</button>
             </form>

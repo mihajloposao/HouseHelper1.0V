@@ -93,3 +93,28 @@ def addNewCountry(countryName):
         session.rollback()
     finally:
         session.close()
+
+def getCountryNames():
+    session = Session()
+    countryNames = session.query(Country.countryName).all()
+    session.close()
+    return countryNames
+
+def addNewCity(countryName, cityName):
+    countryId = getCountryIdByName(countryName)
+    session = Session()
+    newCity = City(cityName = cityName,countryId = countryId)
+    session.add(newCity)
+    try:
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+    finally:
+        session.close()
+
+def getCountryIdByName(countryName):
+    session = Session()
+    country = session.query(Country).filter_by(countryName=countryName).first()
+    countryId = country.id
+    session.close()
+    return  countryId
