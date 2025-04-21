@@ -1,5 +1,6 @@
 from flask import render_template,request,redirect,url_for
-from base import userExist,addNewUserToBase,getUserByEmail,check_password_hash,getUserByEmail, getCountryNames
+from base import (userExist,addNewUserToBase,getUserByEmail,check_password_hash,getUserByEmail,
+                  getCountryNames, addUserAddress)
 from flask_login import login_user, current_user
 import requests
 
@@ -15,7 +16,6 @@ def htmlForUserHomeLogIn():
 
 def htmlForAdminDashboard():
     countryNames = getCountryNames()
-    countryNames = [name[0] for name in countryNames]
     return render_template("html/adminDashboard.html",countryNames = countryNames)
 def htmlForSingInErrorMessage(message):
     return render_template("html/signInUserPersonalInfo.html", errorMessage=message)
@@ -29,7 +29,8 @@ def htmlForSignInUserPersonalInfo():
     return render_template("html/signInUserPersonalInfo.html")
 
 def htmlForSignInUserAddress():
-    return render_template("html/signInUserAddress.html")
+    countryNames = getCountryNames()
+    return render_template("html/signInUserAddress.html", countryNames = countryNames)
 
 def htmlForLogInUser():
     return render_template("html/logInUser.html")
@@ -67,3 +68,11 @@ def getUserLocation():
     country = data.get("country", "Nepoznata država")
     city = data.get("city", "Nepoznat grad")
     return {"country":country,"city":city}
+
+def signInAddressForPostMethod():
+    try:
+        addUserAddress(request.form)
+    except AttributeError:
+        pass
+    finally:
+        return redirect(url_for("homeUser"))

@@ -98,6 +98,7 @@ def getCountryNames():
     session = Session()
     countryNames = session.query(Country.countryName).all()
     session.close()
+    countryNames = [name[0] for name in countryNames]
     return countryNames
 
 def addNewCity(countryName, cityName):
@@ -118,3 +119,13 @@ def getCountryIdByName(countryName):
     countryId = country.id
     session.close()
     return  countryId
+
+def getJsonWithCitiesNames(countryName):
+    session = Session()
+    country = session.query(Country).filter_by(countryName=countryName).first()
+    if not country:
+        return {"cities": []}
+    cities = session.query(City).filter_by(countryId=country.id).all()
+    cityNames = [city.cityName for city in cities]
+    session.close()
+    return {"cities": cityNames}

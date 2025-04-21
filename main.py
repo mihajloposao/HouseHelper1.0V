@@ -1,9 +1,9 @@
-from base import makingDatabases,UserById,addUserAddress, addNewCountry, addNewCity
+from base import makingDatabases,UserById,addUserAddress, addNewCountry, addNewCity, getJsonWithCitiesNames
 from flask import Flask, render_template, url_for, redirect, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOut,
                              htmlForSignInUserPersonalInfo,htmlForSignInUserAddress,htmlForLogInUser,
-                             htmlForUserHomeLogIn)
+                             htmlForUserHomeLogIn,signInAddressForPostMethod)
 
 # when server go live this should be deleted
 #makingDatabases()
@@ -35,8 +35,7 @@ def signInUserPersonalInfo():
 @app.route("/signInAddress",methods= ["GET","POST"] )
 def signInUserAddress():
     if request.method == "POST":
-        addUserAddress(request.form)
-        return redirect(url_for("homeUser"))
+        return signInAddressForPostMethod()
     return htmlForSignInUserAddress()
 
 @app.route("/logIn",methods=["GET","POST"])
@@ -60,10 +59,14 @@ def adminAddNewCounty():
 @app.route("/addNewCity", methods = ["POST"])
 def adminAddNewCity():
     countryName = request.form.get("countryName")
-    print(countryName)
     cityName = request.form.get("cityName")
     addNewCity(countryName,cityName)
     return redirect(url_for("homeUser"))
+
+@app.route("/getCities")
+def getCitiesByCountryName():
+    countryName = request.args.get('countryName')
+    return getJsonWithCitiesNames(countryName)
 
 if __name__ == "__main__":
     app.run(debug=True)

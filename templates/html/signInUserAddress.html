@@ -2,18 +2,24 @@
 <html>
 <head>
     <title>SignIn</title>
-    <!-- Povezivanje sa CSS fajlom unutar 'static' foldera -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/logsignIn.css') }}">
 </head>
 <body>
     <div class="form-container">
         <h2>Enter your address</h2>
         <form action="{{ url_for('signInUserAddress') }}" method="post">
-            <label for="userCountry">Country:</label>
-            <input type="text" id="userCountry" name="userCountry" required>
+            <label>Country:</label>
+            <select name="userCountry" id="userCountry" required>
+                    <option value="" disabled selected hidden>Choose country</option>
+                {% for name in countryNames %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+                </select>
 
             <label for="userCity">City:</label>
-            <input type="text" id="userCity" name="userCity" required>
+            <select name="userCity" id="userCity" required>
+                    <option value="" disabled selected hidden>First choose country</option>
+            </select>
 
             <label for="userStreet">Street:</label>
             <input type="text" id="userStreet" name="userStreet" required>
@@ -28,5 +34,26 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('userCountry').addEventListener('change', function() {
+            const selectedCountry = this.value;
+
+            fetch(`/getCities?countryName=${encodeURIComponent(selectedCountry)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const citySelect = document.getElementById('userCity');
+                    citySelect.innerHTML = '<option value="" disabled selected hidden>Choose city</option>'; // Resetuj
+
+                    data.cities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                });
+        });
+    </script>
+
 </body>
 </html>
