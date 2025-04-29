@@ -27,7 +27,7 @@ class User(Base, UserMixin):
 class Profession(Base):
     __tablename__ = "Professions"
     id = Column(Integer, primary_key=True)
-    professionName = Column(String, nullable=False)
+    professionName = Column(String, nullable=False, unique= True)
 
 class Country(Base):
     __tablename__ = "Countries"
@@ -117,9 +117,26 @@ def addNewCity(countryName, cityName):
     finally:
         session.close()
 
+def addNewProfession(professionName):
+    session = Session()
+    newProfession = Profession(professionName = professionName)
+    session.add(newProfession)
+    try:
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+    finally:
+        session.close()
+
 def getCountryIdByName(countryName):
     session = Session()
     country = session.query(Country).filter_by(countryName=countryName).first()
     countryId = country.id
     session.close()
     return  countryId
+
+def getProfessionNames():
+    session = Session()
+    professionNames = session.query(Profession.professionName).all()
+    professionNames = [name[0] for name in professionNames]
+    return professionNames
