@@ -30,6 +30,10 @@
                 <input type="text" name="cityName" placeholder="City name" required>
                 <button type="submit" name="formType" value="cityForm">Enter new city</button>
             </form>
+            <form action="{{ url_for('adminAddNewProfession') }}" method="post">
+                <input type="text" name="professionName" placeholder="Profesion name" required>
+                <button type="submit" name="formType" value="countryForm">Enter new proffesion</button>
+            </form>
         </div>
     </div>
 

@@ -12,11 +12,12 @@ def htmlForUserHomeLogIn():
     if current_user.userName == "admin":
         return htmlForAdminDashboard()
     else:
-        return current_user.userName
+        return render_template("html/index.html")
 
 def htmlForAdminDashboard():
     countryNames = getCountryNames()
     return render_template("html/adminDashboard.html",countryNames = countryNames)
+
 def htmlForSingInErrorMessage(message):
     return render_template("html/signInUserPersonalInfo.html", errorMessage=message)
 

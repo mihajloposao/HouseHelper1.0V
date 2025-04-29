@@ -24,6 +24,11 @@ class User(Base, UserMixin):
     userStreetNumber = Column(String, nullable=True)
     userPassword = Column(String, nullable=False)
 
+class Profession(Base):
+    __tablename__ = "Professions"
+    id = Column(Integer, primary_key=True)
+    professionName = Column(String, nullable=False, unique= True)
+
 class Country(Base):
     __tablename__ = "Countries"
     id = Column(Integer, primary_key=True)
@@ -113,6 +118,17 @@ def addNewCity(countryName, cityName):
     finally:
         session.close()
 
+def addNewProfession(professionName):
+    session = Session()
+    newProfession = Profession(professionName = professionName)
+    session.add(newProfession)
+    try:
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+    finally:
+        session.close()
+
 def getCountryIdByName(countryName):
     session = Session()
     country = session.query(Country).filter_by(countryName=countryName).first()
@@ -129,3 +145,10 @@ def getJsonWithCitiesNames(countryName):
     cityNames = [city.cityName for city in cities]
     session.close()
     return {"cities": cityNames}
+
+def getProfessionNames():
+    session = Session()
+    professionNames = session.query(Profession.professionName).all()
+    professionNames = [name[0] for name in professionNames]
+    return professionNames
+
