@@ -7,7 +7,7 @@ from simpleFunctions import (makeAndLogInNewUser, logInPost,htmlForUserHomeLogOu
                              htmlForUserHomeLogIn, signInAddressForPostMethod)
 
 # when server go live this should be deleted
-makingDatabases()
+#makingDatabases()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret key"
@@ -28,6 +28,7 @@ def search():
     return jsonify(results)
 
 @app.route("/")
+@app.route("/home")
 def homeUser():
     if current_user.is_authenticated:
         return htmlForUserHomeLogIn()
