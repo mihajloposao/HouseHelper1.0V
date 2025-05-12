@@ -1,0 +1,82 @@
+{%extends 'base.html'%}
+
+{%block title%} HOME WORKER {%endblock%}
+
+{%block additionalCss%}
+.main{
+    margin:10px;
+    padding:10px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: column;
+    color: black;
+}
+.basicInfo{
+    margin:10px;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    width:50%;
+}
+
+.professions{
+    display: flex;
+    flex-direction: row;
+}
+.professionsList{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+}
+hr {
+    border: 0;
+    border-top: 1px solid #000;
+    width: 100%;
+    margin: 20px auto;
+  }
+
+.actions{
+    margin:10px;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    width:50%;
+}
+
+{%endblock%}
+{%block header%}Worker: {{current_user.userName}} {{current_user.userSurename}}{%endblock%}
+{%block content%}
+<div class="main">
+    <h1>HELLO {{current_user.userName}} {{current_user.userSurename}}</h1>
+</div>
+<div class="basicInfo">
+    <h3>Your Basic Info:</h3>
+<p>YOUR COUNTRY: {{current_user.userCountry}}</p>
+    <p>YOUR CITY: {{current_user.userCity}}</p>
+    <p>YOUR DESCRIPTION: {{workerExtra.description}}</p>
+    <div class="professions">
+        <p>YOUR PROFESSIONS:</p>
+        <div class="professionsList">
+            {%if workerExtra.professions == []%}
+            <p>THERE IS NO PROFESSIONS</p>
+            {%else%}
+            {%for profession in workerExtra.professions%}
+            <p>{{profession.professionName}}</p>
+            {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+    <p>YOU CAN SEE YOUR FULL PROFILE: <a href="{{url_for('seeWorkerProfile',workerId=current_user.id)}}">HERE</a></p>
+    </div>
+<hr>
+<div class="actions">
+    <h3>Actions You Can Take:</h3>
+    <p>YOU CAN CHANGE YOUR LOCATION: <a href="{{url_for('signInUserAddress')}}">HERE</a></p>
+    <p>YOU CAN ADD NEW PROFESSION: <a href="{{url_for('workerAddProfession')}}">HERE</a></p>
+    <p>YOU CAN CHANGE YOUR BIO: <a href="{{url_for('workerAddBio')}}">HERE</a></p>
+    <p>YOU CAN SEE YOUR BOOKED JOBS: <a href="{{url_for('workerBookedJobs')}}">HERE</a> (if you have any)</p>
+</div>
+{%endblock%}

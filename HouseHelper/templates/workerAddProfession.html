@@ -1,9 +1,11 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+{%extends 'base.html'%}
+
+{%block title%} Add Profession {%endblock%}
+
+{%block additionalCss%}
+.main{
+    height: 80vh;
     font-family: Arial, sans-serif;
-    background-color: #1ad1ff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,3 +68,23 @@ button {
 button:hover {
     background-color: #005ce6;
 }
+{%endblock%}
+
+{%block header%}WORKER ADD PROFESSION {{userType}} {%endblock%}
+
+{%block content%}
+<div class="main">
+  <div class="form-container">
+        <h2>CHOOSE YOUR PROFESSION</h2>
+        <form method="post">
+                <select name="professionName", required>
+                    <option value="" disabled selected hidden>Choose profession</option>
+                {% for name in professionNames %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+                </select>
+                <button type="submit" name="formType" value="workerAddProfession">Add profession</button>
+        </form>
+    </div>
+    </div>
+{%endblock%}

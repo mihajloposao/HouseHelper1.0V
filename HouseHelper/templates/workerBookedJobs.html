@@ -1,0 +1,161 @@
+{%extends 'base.html'%}
+
+{%block title%} Choose Worker {%endblock%}
+
+{%block additionalCss%}
+.main{
+    margin:10px;
+    padding:10px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: black;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #000;
+    width: 100%;
+    margin: 20px auto;
+  }
+
+.job-card {
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+  margin: 16px;
+  transition: transform 0.2s;
+}
+
+.job-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.job-card {
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+  margin: 16px;
+  transition: transform 0.2s;
+}
+
+.job-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-name {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #020122;
+}
+
+.card-buttons {
+  display: flex;
+    width:30%;
+  justify-content: space-between;
+    margin-top:15px;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.edit-btn {
+  background-color: #1ad1ff;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #005ce6;
+}
+
+.accept-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.finish-btn {
+  background-color: white;
+  color: #28a745;
+}
+
+.accept-btn:hover {
+  background-color: #218838;
+}
+
+.finish-btn:hover {
+  background-color: #b3ffb3;
+}
+
+.decline-btn {
+  background-color: #ff0000;
+  color: white;
+}
+
+.decline-btn:hover {
+  background-color: #cc0000;
+}
+
+{%endblock%}
+{%block header%}Booked Jobs{%endblock%}
+{%block content%}
+    <div class="main">
+        {%for job in bookedJobs%}
+        {%if job.status == "pending"%}
+             <div class="job-card" style="background-color:#ffffcc;">
+                 {%elif job.status == "accepted"%}
+                 <div class="job-card" style="background-color:#009933;">
+                     {%elif job.status == "userPending"%}
+                 <div class="job-card" style="background-color:#b3ecff">
+                 {%else%}
+                 <div class="job-card" style="background-color:white">
+                 {%endif%}
+            <h2 class="user-name">{{job.user.userName}} {{job.user.userSurename}}</h2>
+                 <p>For: {{job.profession}}</p>
+                 <p>Address: {{job.address}}</p>
+                 <p>Date: {{job.date}}</p>
+                 <p>Status: {{job.status}}</p>
+                 {%if job.additionalNotes%}
+                    <p>Note: {{job.additionalNotes}}</p>
+                 {%endif%}
+                 <div class="card-buttons">
+                     {%if job.status != "accepted" and job.status != "userPending"%}
+                     <form method="post">
+                         <input type="hidden" name="jobId" value="{{job.id}}">
+                <button type="submit" name="buttonType" value="accept" class="accept-btn">Accept</button>
+                         </form>
+                     {%elif job.status == "accepted"%}
+                     <form method="post" action="{{url_for('workerFinishJob')}}">
+                         <input type="hidden" name="jobId" value="{{job.id}}">
+                <button type="submit" name="buttonType" value="finish" class="finish-btn">Finish Job</button>
+                         </form>
+                     {%endif%}
+                <form method="post">
+                    <input type="hidden" name="jobId" value="{{job.id}}">
+                     <button type="submit" name="buttonType" value="decline" class="decline-btn">Decline</button>
+                    </form>
+                     <form method="post">
+                         <input type="hidden" name="jobId" value="{{job.id}}">
+                     <button type="submit" name="buttonType" value="edit" class="edit-btn">Edit</button>
+                         </form>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+{%endblock%}

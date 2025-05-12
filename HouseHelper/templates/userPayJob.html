@@ -1,0 +1,160 @@
+{%extends 'base.html'%}
+
+{%block title%} User Pay {%endblock%}
+
+{%block additionalCss%}
+.main{
+    height: 80vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100vh;
+    max-width: 500px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 16px;
+            resize: vertical;
+        }
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1ad1ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+button:hover {
+    background-color: #005ce6;
+}
+
+.decline{
+    margin-top:10px;
+    background-color: #ff1a1a;
+}
+.decline:hover {
+    background-color: #e60000;
+}
+.flash-container {
+    height:40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+.flash-message {
+    color: red;
+    font-family: sans-serif;
+    font-size: 14px;
+    animation: slideIn 0.3s ease-out;
+    text-align: center;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+{%endblock%}
+
+{%block header%}USER PAY{%endblock%}
+
+{%block content%}
+<div class="main">
+ <div class="form-container">
+        <h2>Enter your details</h2>
+        <form  method="POST">
+            <h4>DATE: {{job.date}}</h4>
+            <h4>ADDRESS: {{job.address}}</h4>
+            <h4>Job description:{{job.jobDescription}}</h4>
+
+            <label for="review">Review(OPTIONAL):</label>
+            <textarea name="review" id="review" placeholder="Add your review(OPTIONAL)"></textarea>
+
+            <label for="rating">Your rating:</label>
+            <select name="rating" id="rating" required>
+                    <option value="" disabled selected hidden>Choose your rating</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                </select>
+
+            <button type="submit" name="formType" value="pay">Pay</button>
+
+        </form>
+     <form method="POST">
+         <button type="submit" name="formType" value="decline" class="decline">Decline</button>
+     </form>
+    </div>
+    <div class="flash-container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="flash-message">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+        </div>
+    </div>
+{%endblock%}

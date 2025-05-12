@@ -1,0 +1,126 @@
+{%extends 'base.html'%}
+
+{%block title%} Choose Worker {%endblock%}
+
+{%block additionalCss%}
+.main{
+    background-color: white;
+    margin:10px;
+    padding:10px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: black;
+}
+
+.basic-info{
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    gap:15px;
+}
+
+.worker-rating {
+  font-weight: bold;
+  color: #ff9800;
+  margin: 8px 0;
+}
+
+.worker-price {
+  font-weight: bold;
+  color: black;
+  margin: 8px 0;
+}
+
+.professions{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+}
+
+.profession-names{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.completed-jobs{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+hr {
+    border: 0;
+    border-top: 1px solid #000; /* Razbijena linija */
+    width: 100%;
+    margin: 20px auto;
+  }
+
+.job-card {
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+  margin: 16px;
+  transition: transform 0.2s;
+}
+
+.job-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.worker-description {
+  color: #555;
+  font-size: 20px;
+}
+.worker-price{
+  margin-bottom: 16px;
+}
+
+.user-description {
+  color: #555;
+  font-size: 20px;
+}
+.user-rating {
+  font-weight: bold;
+  color: #ff9800;
+  margin: 8px 0;
+}
+{%endblock%}
+{%block header%}Worker Profile{%endblock%}
+{%block content%}
+<hr>
+<div class="main">
+    <div class="basic-info">
+     <h2>Name: {{workerData["user"].userName}} {{workerData["user"].userSurename}}</h2>
+    <h3 class="worker-rating">Rating: {{workerData["rating"]}}★</h3>
+    <h3 class="worker-price">Average price: {{workerData["price"]}} $</h3>
+    <div class="professions"></div>
+    <div class="professions">
+        <h3>Porfessions: </h3>
+        <div class="profession-names">
+            {%for profession in workerData["professions"]%}
+                <h3>{{profession.professionName}}</h3>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+</div>
+<hr>
+<div class="completed-jobs">
+    <h2>Completed jobs ({{workerData["reviews"]}}):</h2>
+    {%for job in workerData["completedJobs"]%}
+        <div class="job-card">
+            <h2 class="user-name">TO: {{job.user.userName}} {{job.user.userSurename}}</h2>
+            <p class="worker-description">Worker description: {{job.jobDescription}}</p>
+             <p class="worker-price">Price: {{job.price}} $</p>
+            <p class="user-description">User review: {{job.review}}</p>
+            <p class="user-rating">Rating: ★ {{job.rating}}</p>
+        </div>
+    {%endfor%}
+</div>
+{%endblock%}

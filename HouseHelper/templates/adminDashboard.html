@@ -1,0 +1,119 @@
+{%extends 'base.html'%}
+
+{%block title%} Admin {%endblock%}
+
+{%block additionalCss%}
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+
+}
+
+.forms {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 50%;
+}
+
+.forms form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.forms input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.forms select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+
+.forms button {
+    padding: 10px;
+    background-color: #1ad1ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: auto;
+}
+
+.forms button:hover {
+    background-color: #005ce6;
+}
+{%endblock%}
+{%block header%}ADMIN{%endblock%}
+{%block content%}
+    <div class="main-content">
+        <div class="forms">
+            <form   method="POST">
+                <input type="text" name="countryName" placeholder="Country name" required>
+                <button type="submit" name="formType" value="addNewCountry">Enter new country</button>
+            </form>
+
+            <form method="post">
+                <select name="countryName", required>
+                    <option value="" disabled selected hidden>Choose country</option>
+                {% for name in countryNames %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+                </select>
+                <input type="text" name="cityName" placeholder="City name" required>
+                <button type="submit" name="formType" value="addNewCity">Enter new city</button>
+            </form>
+            <form method="post">
+                <input type="text" name="professionName" placeholder="Profesion name" required>
+                <button type="submit" name="formType" value="addNewProfession">Enter new proffesion</button>
+            </form>
+            <form method="post">
+                <select name="countryName", required>
+                    <option value="" disabled selected hidden>Choose country</option>
+                {% for name in countryNames %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+                </select>
+                <button type="submit" name="formType" value="deleteCountry">Deleate Country</button>
+            </form>
+            <form method="post">
+                <select name="cityName", required>
+                    <option value="" disabled selected hidden>Choose city</option>
+                {% for name in cityNames %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+                </select>
+                <button type="submit" name="formType" value="deleteCity">Deleate City</button>
+            </form>
+            <form method="post">
+                <select name="professionName", required>
+                    <option value="" disabled selected hidden>Choose profession</option>
+                {% for name in professionNames %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+                </select>
+                <button type="submit" name="formType" value="deleteProfession">Deleate profession</button>
+            </form>
+        </div>
+    </div>
+
+{%endblock%}

@@ -1,0 +1,116 @@
+{%extends 'base.html'%}
+
+{%block title%} Add Address {%endblock%}
+
+{%block additionalCss%}
+.main{
+    height: 80vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100vh;
+    max-width: 500px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1ad1ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005ce6;
+}
+{%endblock%}
+
+{%block header%}ADD ADDRESS{%endblock%}
+
+{%block content%}
+<div class="main">
+  <div class="form-container">
+        <h2>Enter your address</h2>
+        <form method="post">
+            <label>Country:</label>
+            <select name="country" id="country" required>
+                    <option value="" disabled selected hidden>Choose country</option>
+                {% for name in countryNames %}
+                    <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+                </select>
+
+            <label for="city">City:</label>
+            <select name="city" id="city" required>
+                    <option value="" disabled selected hidden>First choose country</option>
+            </select>
+
+            <button type="submit">Add Address</button>
+        </form>
+    </div>
+    </div>
+    <script>
+        document.getElementById('country').addEventListener('change', function() {
+            const selectedCountry = this.value;
+
+            fetch(`/getCities?countryName=${encodeURIComponent(selectedCountry)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const citySelect = document.getElementById('city');
+                    citySelect.innerHTML = '<option value="" disabled selected hidden>Choose city</option>';
+
+                    data.cities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        option.textContent = city;
+                        citySelect.appendChild(option);
+                    });
+                });
+        });
+    </script>
+{%endblock%}

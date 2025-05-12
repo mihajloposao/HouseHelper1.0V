@@ -1,0 +1,109 @@
+{%extends 'base.html'%}
+
+{%block title%} ADD BIO {%endblock%}
+
+{%block additionalCss%}
+.main{
+    height: 80vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100vh;
+    max-width: 500px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 16px;
+            resize: vertical;
+        }
+
+button {
+    margin-top:15px;
+    width: 100%;
+    padding: 10px;
+    background-color: #1ad1ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005ce6;
+}
+
+.flash-container {
+    height:40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+.flash-message {
+    color: red;
+    font-family: sans-serif;
+    font-size: 14px;
+    animation: slideIn 0.3s ease-out;
+    text-align: center;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+{%endblock%}
+
+{%block header%}WORKER ADD BIO{%endblock%}
+
+{%block content%}
+<div class="main">
+ <div class="form-container">
+        <h2>Enter your bio</h2>
+        <form method="POST">
+
+             <textarea name="bio" placeholder="Who are you"></textarea>
+
+            <button type="submit" name="formType" value="workerAddBio">Add Bio</button>
+
+        </form>
+    </div>
+    <div class="flash-container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="flash-message">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+        </div>
+    </div>
+{%endblock%}

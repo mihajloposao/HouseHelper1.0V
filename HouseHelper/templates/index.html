@@ -1,0 +1,116 @@
+{%extends 'base.html'%}
+
+{%block title%} Home {%endblock%}
+
+{%block additionalCss%}
+    .title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    text-align: center;
+}
+
+.title-container h1 {
+    font-size: 48px;
+    font-weight: bold;
+    color: #1ad1ff;
+}
+
+.title-container h2 {
+    font-size: 24px;
+    font-weight: normal;
+    color: #80e5ff;
+    margin-top: 10px;
+}
+
+.search-container {
+    position: relative;
+    width: 300px;
+    margin: 20px auto;
+}
+
+#search-box {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#suggestions {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#suggestions li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#suggestions li:hover {
+    background: #f0f0f0;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1ad1ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
+button:hover {
+    background-color: #005ce6;
+}
+
+{%endblock%}
+{%block header%}HOME{%endblock%}
+{%block content%}
+<form action="{{url_for('chooseWorker')}}" method="POST">
+     <div class="title-container">
+        <h1>HouseHelper</h1>
+        <h2>Search what you need</h2>
+        <div class="search-container">
+            <input type="text" name="profession" id="search-box" placeholder="Search..." onkeyup="searchSuggestions()">
+        <ul id="suggestions"></ul>
+            <button type="submit">SEARCH</button>
+    </div>
+    </div>
+    </form>
+    <script>
+        function searchSuggestions() {
+            let query = document.getElementById("search-box").value;
+            if (query.length === 0) {
+                document.getElementById("suggestions").innerHTML = "";
+                return;
+            }
+
+            fetch(`/search?searchInput=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let suggestionsList = document.getElementById("suggestions");
+                    suggestionsList.innerHTML = "";
+                    data.forEach(item => {
+                        let li = document.createElement("li");
+                        li.textContent = item;
+                        li.onclick = function() {
+                            document.getElementById("search-box").value = item;
+                            suggestionsList.innerHTML = "";
+                        };
+                        suggestionsList.appendChild(li);
+                    });
+                });
+        }
+    </script>
+{%endblock%}

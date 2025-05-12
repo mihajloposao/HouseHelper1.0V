@@ -1,0 +1,121 @@
+{%extends 'base.html'%}
+
+{%block title%} Choose Worker {%endblock%}
+
+{%block additionalCss%}
+.main{
+    margin-top: 50px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: #020122;
+}
+
+.worker-card {
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+  margin: 16px;
+  transition: transform 0.2s;
+}
+
+.worker-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.worker-name {
+  margin-top: 0;
+  font-size: 20px;
+  color: #020122;
+}
+
+.worker-rating {
+  font-weight: bold;
+  color: #ff9800;
+  margin: 8px 0;
+}
+
+.worker-reviews {
+  font-style: italic;|
+  color: #555;
+  margin: 8px 0;
+}
+
+.worker-price {
+  color: #555;
+  margin: 8px 0;
+}
+
+.worker-description {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.card-buttons {
+  display: flex;
+  width: 20%;
+  justify-content: space-between;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.profile-btn {
+  background-color: #1ad1ff;
+  color: white;
+}
+
+.profile-btn:hover {
+  background-color: #005ce6;
+}
+
+.book-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.book-btn:hover {
+  background-color: #218838;
+}
+
+
+{%endblock%}
+{%block header%}Choose Worker{%endblock%}
+{%block content%}
+<div class="main">
+     {%if not workersData%}
+          <h1>Currently there is not a single worker who is an {{profession.capitalize()}} in
+          {{country.capitalize()}} {{city.capitalize()}}</h1>
+    {%else%}
+          <h1>List of {{profession.capitalize()}} in {{country.capitalize()}} {{city.capitalize()}}</h1>
+    {%endif%}
+    {%for data in workersData%}
+        <div class="worker-card">
+            <h2 class="worker-name">{{data["user"].userName}} {{data["user"].userSurename}}</h2>
+            <p class="worker-rating">Rating: ★ {{data["rating"]}} ({{data["reviews"]}})</p>
+            <p class="worker-price">Average price: {{data["price"]}} $</p>
+            <p class="worker-description">
+                {{data["description"]}}
+            </p>
+            <div class="card-buttons">
+                <a href="/seeWorkerProfile/{{data['user'].id}}"><button class="profile-btn">See profile</button></a>
+                <a href="/userBookWorker/{{data['user'].id}}/{{profession}}"><button class="book-btn">Book</button></a>
+            </div>
+        </div>
+    {%endfor%}
+</div>
+
+{%endblock%}
